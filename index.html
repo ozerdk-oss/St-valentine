@@ -1,109 +1,33 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Il n’y a rien ici</title>
-
-<style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  height: 100vh;
-  background: #0e0e0e;
-  color: #f2f2f2;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Arial, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-#container {
-  max-width: 90%;
-}
-
-#text {
-  font-size: 1.3rem;
-  line-height: 1.6;
-  min-height: 120px;
-}
-
-button {
-  margin-top: 25px;
-  padding: 14px 26px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 12px;
-  background: #ffffff;
-  color: #111;
-  cursor: pointer;
-  transition: transform 0.2s, background 0.2s;
-}
-
-button:active {
-  transform: scale(0.95);
-}
-
-#hearts {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  display: none;
-}
-
-.heart {
-  position: absolute;
-  color: #ff4d6d;
-  font-size: 24px;
-  animation: fall 3s linear forwards;
-}
-
-@keyframes fall {
-  from { transform: translateY(-10vh); opacity: 1; }
-  to { transform: translateY(110vh); opacity: 0; }
-}
-</style>
-</head>
-
-<body>
-
-<div id="container">
-  <div id="text"></div>
-  <button id="btn" onclick="next()">Fermer cette page</button>
-</div>
-
-<div id="hearts"></div>
-
 <script>
 const name = "Wafa";
 
 const steps = [
-  `Ce site n’est pas une demande de Valentine.<br>Il n’y a rien à voir ici, ${name}.`,
-  `Hm.<br>Pourquoi es-tu encore là, ${name} ?`,
-  "Je t’ai pourtant demandé de fermer cette page.",
-  "Bon.<br>Reste, si tu veux.<br>Mais ne t’attends à rien.",
-  "Surtout…<br><strong>ne clique PAS sur le bouton ci-dessous.</strong>",
-  "…",
-  "Ok.<br>J’abandonne complètement.",
-  `<strong>${name}, veux-tu être ma Valentine ? 💖</strong>`
+  `Ce site n’est pas une demande de Valentine.`,
+  `Il n’y a rien à voir ici, ${name}.`,
+  `Hm… pourquoi es-tu encore là ?`,
+  `Je t’ai pourtant demandé de fermer cette page.`,
+  `Bon. Reste si tu veux.`,
+  `Mais ne t’attends à rien.`,
+  `Surtout… ne clique pas sur le bouton.`,
+  `…`,
+  `Ok. J’abandonne complètement.`
 ];
 
 let step = 0;
 const textEl = document.getElementById("text");
 const btn = document.getElementById("btn");
 
-function typeText(text) {
-  textEl.innerHTML = "";
+function typeText(text, callback) {
+  textEl.textContent = "";
   let i = 0;
   const interval = setInterval(() => {
-    textEl.innerHTML += text[i];
+    textEl.textContent += text[i];
     i++;
-    if (i >= text.length) clearInterval(interval);
-  }, 30);
+    if (i >= text.length) {
+      clearInterval(interval);
+      if (callback) callback();
+    }
+  }, 35);
 }
 
 function next() {
@@ -113,13 +37,21 @@ function next() {
 
     if (step === 2) btn.textContent = "Je suis toujours là";
     if (step === 4) btn.textContent = "Ok…";
-    if (step === 5) btn.textContent = "Cliquer quand même";
-    if (step === 7) btn.style.display = "none";
+    if (step === 6) btn.textContent = "Cliquer quand même";
+    if (step === 8) {
+      btn.style.display = "none";
+      setTimeout(showFinal, 800);
+    }
   }
+}
 
-  if (step === steps.length) {
-    startHearts();
-  }
+function showFinal() {
+  textEl.style.fontSize = "1.5rem";
+  textEl.style.fontWeight = "600";
+  typeText(
+    `Ok… tu as gagné 💖\nVeux-tu être ma Valentine, mon amour ?`,
+    startHearts
+  );
 }
 
 function startHearts() {
@@ -131,16 +63,13 @@ function startHearts() {
     h.className = "heart";
     h.textContent = "💖";
     h.style.left = Math.random() * 100 + "vw";
-    h.style.fontSize = 16 + Math.random() * 20 + "px";
+    h.style.fontSize = 18 + Math.random() * 22 + "px";
     hearts.appendChild(h);
-
     setTimeout(() => h.remove(), 3000);
-  }, 300);
+  }, 250);
 }
 
-// lancement
+// démarrage
 typeText(steps[0]);
 </script>
 
-</body>
-</html>
