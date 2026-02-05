@@ -1,75 +1,287 @@
-<script>
-const name = "Wafa";
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ceci n'est pas une demande de Valentine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-const steps = [
-  `Ce site n’est pas une demande de Valentine.`,
-  `Il n’y a rien à voir ici, ${name}.`,
-  `Hm… pourquoi es-tu encore là ?`,
-  `Je t’ai pourtant demandé de fermer cette page.`,
-  `Bon. Reste si tu veux.`,
-  `Mais ne t’attends à rien.`,
-  `Surtout… ne clique pas sur le bouton.`,
-  `…`,
-  `Ok. J’abandonne complètement.`
-];
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff6b9d 0%, #ffc3d5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
 
-let step = 0;
-const textEl = document.getElementById("text");
-const btn = document.getElementById("btn");
+        /* Cœurs flottants en arrière-plan */
+        .heart-bg {
+            position: absolute;
+            font-size: 30px;
+            opacity: 0.3;
+            animation: float 10s infinite;
+        }
 
-function typeText(text, callback) {
-  textEl.textContent = "";
-  let i = 0;
-  const interval = setInterval(() => {
-    textEl.textContent += text[i];
-    i++;
-    if (i >= text.length) {
-      clearInterval(interval);
-      if (callback) callback();
-    }
-  }, 35);
-}
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
 
-function next() {
-  if (step < steps.length) {
-    typeText(steps[step]);
-    step++;
+        .container {
+            background: white;
+            padding: 40px 60px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+            position: relative;
+            z-index: 10;
+        }
 
-    if (step === 2) btn.textContent = "Je suis toujours là";
-    if (step === 4) btn.textContent = "Ok…";
-    if (step === 6) btn.textContent = "Cliquer quand même";
-    if (step === 8) {
-      btn.style.display = "none";
-      setTimeout(showFinal, 800);
-    }
-  }
-}
+        h1 {
+            color: #ff1744;
+            font-size: 28px;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
 
-function showFinal() {
-  textEl.style.fontSize = "1.5rem";
-  textEl.style.fontWeight = "600";
-  typeText(
-    `Ok… tu as gagné 💖\nVeux-tu être ma Valentine, mon amour ?`,
-    startHearts
-  );
-}
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
 
-function startHearts() {
-  const hearts = document.getElementById("hearts");
-  hearts.style.display = "block";
+        button {
+            padding: 15px 40px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+        }
 
-  setInterval(() => {
-    const h = document.createElement("div");
-    h.className = "heart";
-    h.textContent = "💖";
-    h.style.left = Math.random() * 100 + "vw";
-    h.style.fontSize = 18 + Math.random() * 22 + "px";
-    hearts.appendChild(h);
-    setTimeout(() => h.remove(), 3000);
-  }, 250);
-}
+        .btn-primary {
+            background: #ff1744;
+            color: white;
+        }
 
-// démarrage
-typeText(steps[0]);
-</script>
+        .btn-primary:hover {
+            background: #d01438;
+            transform: scale(1.05);
+        }
 
+        .btn-secondary {
+            background: #ffc3d5;
+            color: #ff1744;
+        }
+
+        .btn-secondary:hover {
+            background: #ffb3c9;
+            transform: scale(1.05);
+        }
+
+        #noBtn {
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        /* Animation de cœurs finale */
+        .heart {
+            position: fixed;
+            font-size: 40px;
+            animation: rise 3s ease-out forwards;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(0) scale(0);
+                opacity: 1;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .final-message {
+            display: none;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .cupid-emoji {
+            font-size: 60px;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .dots {
+            font-size: 60px;
+            letter-spacing: 10px;
+            color: #ff1744;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            button {
+                padding: 12px 30px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cœurs flottants en arrière-plan -->
+    <div class="heart-bg" style="top: 10%; left: 10%;">💕</div>
+    <div class="heart-bg" style="top: 20%; right: 15%; animation-delay: 2s;">❤️</div>
+    <div class="heart-bg" style="bottom: 15%; left: 20%; animation-delay: 4s;">💖</div>
+    <div class="heart-bg" style="bottom: 25%; right: 10%; animation-delay: 3s;">💗</div>
+    <div class="heart-bg" style="top: 50%; left: 5%; animation-delay: 1s;">💝</div>
+    <div class="heart-bg" style="top: 60%; right: 8%; animation-delay: 5s;">💘</div>
+
+    <div class="container">
+        <div id="step1">
+            <div class="cupid-emoji">💘</div>
+            <h1>Bonjour, je suis Cupidon.<br>Ceci n'est PAS une demande de Valentine.<br>Retourne d'où tu viens !</h1>
+            <div class="buttons">
+                <button class="btn-primary" onclick="nextStep(2)">OK</button>
+            </div>
+        </div>
+
+        <div id="step2" style="display: none;">
+            <div class="cupid-emoji">😤</div>
+            <h1>Qu'est-ce que tu fais encore là ?<br>Tu n'as pas du crochet à faire ?</h1>
+            <div class="buttons">
+                <button class="btn-primary" onclick="nextStep(3)">Si, je suis occupée</button>
+            </div>
+        </div>
+
+        <div id="step3" style="display: none;">
+            <div class="cupid-emoji">🤨</div>
+            <h1>Je vois que tu ne veux vraiment pas partir...</h1>
+            <div class="buttons">
+                <button class="btn-primary" onclick="nextStep(4)">Non</button>
+            </div>
+        </div>
+
+        <div id="step4" style="display: none;">
+            <div class="cupid-emoji">😒</div>
+            <h1>Bon... reste si tu veux.</h1>
+            <div class="buttons">
+                <button class="btn-primary" onclick="nextStep(5)">Oui</button>
+            </div>
+        </div>
+
+        <div id="step5" style="display: none;">
+            <div class="cupid-emoji">🤔</div>
+            <h1 class="dots">...</h1>
+            <div class="buttons">
+                <button class="btn-primary" onclick="nextStep(6)">Continuer</button>
+            </div>
+        </div>
+
+        <div id="step6" style="display: none;">
+            <div class="cupid-emoji">💘</div>
+            <h1>Bon, très bien...<br><br>Veux-tu être la Valentine d'Axel ?<br>Car il t'aime énormément.<br><br><small>(Mais moi je n'ai rien à voir là-dedans... 😏)</small></h1>
+            <div class="buttons">
+                <button class="btn-primary" id="yesBtn" onclick="showLove()">Oui ❤️</button>
+                <button class="btn-secondary" id="noBtn" onmouseover="runAway()" ontouchstart="runAway()">Non</button>
+            </div>
+        </div>
+
+        <div id="finalMessage" class="final-message">
+            <div class="cupid-emoji">💖</div>
+            <h1>YESSS ! 🎉<br><br>Axel est le plus heureux du monde !<br><br>Bonne Saint-Valentin Wafa ! 💕</h1>
+        </div>
+    </div>
+
+    <script>
+        let step = 1;
+
+        function nextStep(nextStepNum) {
+            document.getElementById('step' + step).style.display = 'none';
+            document.getElementById('step' + nextStepNum).style.display = 'block';
+            step = nextStepNum;
+        }
+
+        function runAway() {
+            const noBtn = document.getElementById('noBtn');
+            const container = document.querySelector('.container');
+            const containerRect = container.getBoundingClientRect();
+            
+            // Position aléatoire dans le container
+            const maxX = containerRect.width - noBtn.offsetWidth - 40;
+            const maxY = containerRect.height - noBtn.offsetHeight - 40;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        function showLove() {
+            document.getElementById('step6').style.display = 'none';
+            document.getElementById('finalMessage').style.display = 'block';
+            
+            // Créer beaucoup de cœurs qui montent
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createHeart();
+                }, i * 100);
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = ['❤️', '💕', '💖', '💗', '💘', '💝'][Math.floor(Math.random() * 6)];
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.bottom = '0px';
+            heart.style.animationDelay = Math.random() * 0.5 + 's';
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
